@@ -5,6 +5,9 @@ import {Script, console} from "forge-std/Script.sol";
 import {Vm} from "forge-std/Vm.sol";
 
 import {Messenger} from "../src/Messenger.sol";
+
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 import "./Helper.sol";
 
 
@@ -18,6 +21,10 @@ contract DeployMessengerFujiScript is Script, Helper{
 
         console.log("Messenger deployed at address: ", address(messenger));
 
+        IERC20 link = IERC20(linkAvalancheFuji);
+
+        link.transfer(address(messenger), 2 * 10**18);
+
         vm.stopBroadcast();    
     }
 }
@@ -30,6 +37,13 @@ contract DeployMessengerSepoliaScript is Script, Helper{
         Messenger messenger = new Messenger(routerEthereumSepolia , linkEthereumSepolia);
 
         console.log("Messenger deployed at address: ", address(messenger));
+
+
+        IERC20 link = IERC20(linkEthereumSepolia);
+
+        link.transfer(address(messenger), 2 * 10**18);
+
+        messenger.start();
 
         vm.stopBroadcast();    
     }

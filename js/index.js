@@ -56,13 +56,15 @@ const ethers = require('ethers')
                 console.log("Message:", msg)
             })
 
-            const chId = chainData.chains[1].chainlinkId
+            const chId = chainData.chains[1].chainLinkId
             const dest = chainData.chains[1].messengerAddress
             const data = ethers.toUtf8Bytes('Hola Don Pepito!')
-            
+   
+            console.log(chId, dest, data)
+
             try{
-                tx = await msgrCtrt.sendMessage(chId, dest, data)
-                console.log('Transaction with Message sent. Tx:', tx.hash)
+                tx = await msgrCtrt.sendMessage(chId, dest, data)     
+                console.log('Transaction with Message sent. Tx:', tx)
             } catch (err)  {
                 console.log('Error sending message:', err)
             }
@@ -105,12 +107,12 @@ const ethers = require('ethers')
 
                 console.log('Sending Response...')
 
-                const chId = chainData.chains[0].chainlinkId
+                const chId = chainData.chains[0].chainLinkId
                 const rcvr = chainData.chains[0].messengerAddress
                 const data = ethers.toUtf8Bytes('Hola Don José!')
                 try{
                     tx = await msgrCtrt.sendMessage(chId, rcvr, data)
-                    console.log('Transaction with Message sent. Tx:', tx.hash)
+                    console.log('Transaction with Message sent. Tx:', tx)
                 } catch  (err)  {
                     console.log('Error sending message:', err)
                 }
