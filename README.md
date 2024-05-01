@@ -1,24 +1,24 @@
-## Foundry
+## CCIP Messenger
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+** CCIP Messenger & CCDPDriver: a Driver for CCIP and a Crosschain Messenger as a simplest usecase. **
 
-Foundry consists of:
+CCIP Messenger consists of:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+-   **CCIP Messenger**: Contract that instantiates CCIPDriver and implements ICCIPDriverConsumer
+-   **CCIPDriver**: Driver for CCIP
+-   **CCIPMessenger Script**: *Forge* script with contracts to implement and interact
 
-## Documentation
+CCIP Driver is generic and can be used in any context wich requires complex cross-chain data communication.
 
-https://book.getfoundry.sh/
+CCIP Messenger is also generic, but CCIPMessengerScript.s.sol contracts use hardcoded values as a PoC. In this case it's implemented in **Avalanche Fuji Testnet** and **Ethereum Seppolia Testnet**.
 
 ## Usage
 
 ### Build
 
 ```shell
-$ forge build
+$ npm install
+$ forge install
 ```
 
 ### Test
@@ -27,40 +27,57 @@ $ forge build
 $ forge test
 ```
 
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
 ### Deploy
 
+## Update .env
+
+First we must create our **.env** file.
+
+```.env
+FUJI_ACCOUNT_PRIVATE_KEY = <your_fuji_account_private_key>
+FUJI_RPC_URL = <your_fuji_rpc>
+
+SEPOLIA_ACCOUNT_PRIVATE_KEY = <your_sepolia_private_key>
+SEPOLIA_RPC_URL = <your_sepolia_rpc>
+```
+TODO: use this .env so I stop sharing my RPC endpoints in foundry.toml and do things f****g right
+
+Be sure you have founded both accounts with LINK testnet token and native token for gas and fees. 
+
+## Deploy contracts
+
+Now we can deploy our contracts. Srcipts are hardcoded and use contract Helper.sol from https://github.com/smartcontractkit/ccip-starter-kit-foundry/blob/main/script/Helper.sol hardcoded values.
+
+** Avalanche Fuji testnet **
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/CCIPMessenger.s.sol:DeployMessengerFujiScript -vvv --rpc-url <your_rpc_url> 
 ```
 
-### Cast
-
+** Ethereum Seppolia testnet **
 ```shell
-$ cast <subcommand>
+$ forge script script/CCIPMessenger.s.sol:DeployMessengerSepoliaScript -vvv --rpc-url <your_rpc_url> 
 ```
 
-### Help
+Be sure you take note of transaction hashes and contract addresses for further analisys and inspection.
+
+## Fund contracts
+
+Each Messenger contract should be funded with some LINK. Please refer to https://docs.chain.link/resources/link-token-contracts to get both LINK and native tokens for any testnet you may be using. 
+
+## Add partner data
+
+Deterministic address deployment has not been (still) implemented here, so in coding time Messenger addresses weren't available for fast hardcoding, so information about each other contract must be updated manually.
+
 
 ```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+$ forge script script/CCIPMessenger.s.sol:UpdateFujiPartnerScript -vvv  \ 
+     --rpc-url <your_rpc_url> --sig "run(address,address)" \
+     --  <your_fuji_messenger_address> <your_sepolia_messenger_address>
 ```
+
+```shell
+$ forge script script/CCIPMessenger.s.sol:UpdateSepoliaPartnerScript -vvv  \ 
+     --rpc-url <your_rpc_url> --sig "run(address,address)" \
+     --  <your_sepolia_messenger_address> <your_fuji_messenger_address>
+```
+
