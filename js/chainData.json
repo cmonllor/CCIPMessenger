@@ -1,7 +1,7 @@
 {
     "chains": [
         {
-            "name": "Avalanche Fuki testnet",
+            "name": "Avalanche Fuji testnet",
             "shortId": 43113,
             "chainLinkId": 14767482510784806043,
             "chainLinkRouterAddress": "0xF694E193200268f9a4868e4Aa017A0118C9a8177",
@@ -14,7 +14,7 @@
             "chainLinkId": 16015286601757825753,
             "chainLinkRouterAddress": "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59",
             "LINKTokenAddress": "0x779877A7B0D9E8603169DdbD7836e478b4624789",
-            "messengerAddress": "0xF69B063460ed64DD4Ce58D8FED2480ECf8506A19"
+            "messengerAddress": "0x3C49b2963bDb65cD9FD1074FEAcFF95378225F37"
         }
     ]
 }

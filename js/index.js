@@ -25,6 +25,8 @@ const ethers = require('ethers')
             const provider = new ethers.providers.JsonRpcProvider(rpc);
             const wallet = new ethers.Wallet(prik, provider);
 
+            console.log('Connected to Avalanche Fuji Testnet!')
+
             const abi = 
             [
                 "function sendMessage(uint64,address,bytes)",
@@ -43,6 +45,15 @@ const ethers = require('ethers')
             msgrCtrt.on('MessageReceived', (msgId, chain, src, msg) => {
                 console.log('Message [', msgId, '] from chain <', chain, '> received from <', src, '>');
                 console.log("Message:", msg)
+                const chId = chainData.chains[0].chainlinkId
+                const rcvr = chainData.chains[0].messengerAddress
+                const data = ethers.toUtf8Bytes('Hola Don José!')
+                
+                msgrCtrt.sendMessage(chId, rcvr, data).then( (tx) => {
+                    console.log('Transaction with Message sent. Tx:', tx.hash)
+                }).catch( (err) => {
+                    console.log('Error sending message:', err)
+                })
             })
             msgrCtrt.on('MessageAcknowledged', (msgId, chain, dest, msg) => {
                 console.log('Message [', msgId, '] to chain <', chain, '> to <', dest, '> acknowledged');
@@ -55,9 +66,9 @@ const ethers = require('ethers')
 
             const chId = chainData.chains[1].chainlinkId
             const dest = chainData.chains[1].messengerAddress
-            const msg = ethers.utils.toUtf8Bytes('Hola Don Pepito!')
-            const encodedMsg = ethers.abi.encode(['bytes'], [msg])
-            msgrCtrt.sendMessage(chId, dest, encodedMsg).then( (tx) => {
+            const data = ethers.toUtf8Bytes('Hola Don Pepito!')
+            
+            msgrCtrt.sendMessage(chId, dest, data).then( (tx) => {
                 console.log('Transaction with Message sent. Tx:', tx.hash)
             }).catch( (err) => {
                 console.log('Error sending message:', err)
@@ -75,6 +86,8 @@ const ethers = require('ethers')
             const provider = new ethers.providers.JsonRpcProvider(rpc);
             const wallet = new ethers.Wallet(prik, provider);
 
+            console.log('Wallet Address:', wallet.address)
+
             const abi = 
             [
                 "function sendMessage(uint64,address,bytes)",
@@ -93,30 +106,17 @@ const ethers = require('ethers')
             msgrCtrt.on('MessageReceived', (msgId, chain, src, msg) => {
                 console.log('Message [', msgId, '] from chain <', chain, '> received from <', src, '>');
                 console.log("Message:", msg)
+
             })
             msgrCtrt.on('MessageAcknowledged', (msgId, chain, dest, msg) => {
                 console.log('Message [', msgId, '] to chain <', chain, '> to <', dest, '> acknowledged');
                 console.log("Message:", msg)
-
-                const decodedMsg = ethers.utils.defaultAbiCoder.decode(['bytes'], msg)
-                console.log('Decoded Message:', decodedMsg[0].toString())
-                const chId = chainData.chains[1].chainlinkId
-                const dest = chainData.chains[1].messengerAddress
-                const msg = ethers.utils.toUtf8Bytes('Hola Don José!')
-                const encodedMsg = ethers.abi.encode(['bytes'], [msg])
-                msgrCtrt.sendMessage(chId, dest, encodedMsg).then( (tx) => {
-                    console.log('Transaction with Message sent. Tx:', tx.hash)
-                }).catch( (err) => {
-                    console.log('Error sending message:', err)
-                })
             })
+            
             msgrCtrt.on('ErrorReceived', (msgId, chain, dest, msg) => {
                 console.log('Message [', msgId, '] to chain <', chain, '> to <', dest, '> errored');
                 console.log("Message:", msg)
             })
-
-            
-
         }
     }
 
