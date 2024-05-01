@@ -62,4 +62,3 @@ contract UpdateSepoliaPartnerScript is Script, Helper{
         vm.stopBroadcast();    
     }
 }
-

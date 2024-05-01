@@ -102,4 +102,18 @@ contract Messenger is ICCIPDriverConsumer {
         emit ErrorReceived(_messageId, _networkId, _sender, _data);
         waitingAck[_messageId] = false;
     }
+
+    /**
+     * @dev - Send a message to a destination chain
+     * @param _destNetwork - The network ID of the destination chain
+     * @param _destination - The address of the receiver on the destination chain
+     * @param _data - The message data
+     * @return messageId - The unique ID of the message
+     */
+    function sendMessage(uint64 _destNetwork, address _destination, bytes calldata _data) external returns (bytes32 messageId){
+        bytes32 id =  ccipDriver.sendMessagePayLINK(_destNetwork, _destination, _data);
+        waitingAck[id] = true;
+
+        return id;
+    }
 }

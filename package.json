@@ -1,5 +1,5 @@
 {
-  "name": "mctokenmum",
+  "name": "ccipmessenger",
   "version": "1.0.0",
   "description": "**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**",
   "main": "index.js",
@@ -8,12 +8,15 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-fuji": "node ./js/index.js  0",
+    "run-sepolia": "node  './js/index.js'  1"
   },
-  "author": "",
+  "author": "cmonllor",
   "license": "ISC",
   "dependencies": {
     "@chainlink/contracts": "^1.1.0",
-    "@chainlink/contracts-ccip": "^1.4.0"
+    "@chainlink/contracts-ccip": "^1.4.0",
+    "ethers": "^5.7.2"
   }
 }
