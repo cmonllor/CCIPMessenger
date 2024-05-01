@@ -22,10 +22,11 @@ const ethers = require('ethers')
 
             const messengerAddress = chainData.chains[0].messengerAddress;
 
-            const provider = new ethers.providers.JsonRpcProvider(rpc);
+            const provider = new ethers.WebSocketProvider(rpc);
             const wallet = new ethers.Wallet(prik, provider);
 
-            console.log('Connected to Avalanche Fuji Testnet!')
+            const blk = await provider.getBlockNumber()
+            console.log('Connected to Avalanche Fuji Testnet! Block:', blk)
 
             const abi = 
             [
@@ -37,7 +38,7 @@ const ethers = require('ethers')
             ]
 
             //subscribe to events
-            const msgrCtrt = new ethers.Contract(messengerAddress, abi, provider);
+            const msgrCtrt = new ethers.Contract(messengerAddress, abi, wallet);
             msgrCtrt.on('MessageSent', (msgId, chain, dest, msg, feeToken, fee) => {
                 console.log('Message [', msgId, '] to chain <', chain, '>:<', dest, '> sent.'); 
                 console.log('Message: ', msg)
@@ -45,15 +46,6 @@ const ethers = require('ethers')
             msgrCtrt.on('MessageReceived', (msgId, chain, src, msg) => {
                 console.log('Message [', msgId, '] from chain <', chain, '> received from <', src, '>');
                 console.log("Message:", msg)
-                const chId = chainData.chains[0].chainlinkId
-                const rcvr = chainData.chains[0].messengerAddress
-                const data = ethers.toUtf8Bytes('Hola Don José!')
-                
-                msgrCtrt.sendMessage(chId, rcvr, data).then( (tx) => {
-                    console.log('Transaction with Message sent. Tx:', tx.hash)
-                }).catch( (err) => {
-                    console.log('Error sending message:', err)
-                })
             })
             msgrCtrt.on('MessageAcknowledged', (msgId, chain, dest, msg) => {
                 console.log('Message [', msgId, '] to chain <', chain, '> to <', dest, '> acknowledged');
@@ -68,11 +60,12 @@ const ethers = require('ethers')
             const dest = chainData.chains[1].messengerAddress
             const data = ethers.toUtf8Bytes('Hola Don Pepito!')
             
-            msgrCtrt.sendMessage(chId, dest, data).then( (tx) => {
+            try{
+                tx = await msgrCtrt.sendMessage(chId, dest, data)
                 console.log('Transaction with Message sent. Tx:', tx.hash)
-            }).catch( (err) => {
+            } catch (err)  {
                 console.log('Error sending message:', err)
-            })
+            }
 
         }
         else if( arg == 1 ){
@@ -83,8 +76,11 @@ const ethers = require('ethers')
 
             const messengerAddress = chainData.chains[1].messengerAddress;
 
-            const provider = new ethers.providers.JsonRpcProvider(rpc);
+            const provider = new ethers.WebSocketProvider(rpc);
             const wallet = new ethers.Wallet(prik, provider);
+
+            const blk = await provider.getBlockNumber()
+            console.log('Connected to Ethereum Sepolia Testnet! Block:', blk)
 
             console.log('Wallet Address:', wallet.address)
 
@@ -98,21 +94,31 @@ const ethers = require('ethers')
             ]
 
             //subscribe to events
-            const msgrCtrt = new ethers.Contract(messengerAddress, abi, provider);
+            const msgrCtrt = new ethers.Contract(messengerAddress, abi, wallet);
             msgrCtrt.on('MessageSent', (msgId, chain, dest, msg, feeToken, fee) => {
                 console.log('Message [', msgId, '] to chain <', chain, '>:<', dest, '> sent.'); 
                 console.log('Message: ', msg)
             })
-            msgrCtrt.on('MessageReceived', (msgId, chain, src, msg) => {
+            msgrCtrt.on('MessageReceived',async (msgId, chain, src, msg) => {
                 console.log('Message [', msgId, '] from chain <', chain, '> received from <', src, '>');
                 console.log("Message:", msg)
 
+                console.log('Sending Response...')
+
+                const chId = chainData.chains[0].chainlinkId
+                const rcvr = chainData.chains[0].messengerAddress
+                const data = ethers.toUtf8Bytes('Hola Don José!')
+                try{
+                    tx = await msgrCtrt.sendMessage(chId, rcvr, data)
+                    console.log('Transaction with Message sent. Tx:', tx.hash)
+                } catch  (err)  {
+                    console.log('Error sending message:', err)
+                }
             })
             msgrCtrt.on('MessageAcknowledged', (msgId, chain, dest, msg) => {
                 console.log('Message [', msgId, '] to chain <', chain, '> to <', dest, '> acknowledged');
                 console.log("Message:", msg)
-            })
-            
+            })            
             msgrCtrt.on('ErrorReceived', (msgId, chain, dest, msg) => {
                 console.log('Message [', msgId, '] to chain <', chain, '> to <', dest, '> errored');
                 console.log("Message:", msg)
