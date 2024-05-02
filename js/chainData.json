@@ -6,7 +6,7 @@
             "chainLinkId": "14767482510784806043",
             "chainLinkRouterAddress": "0xF694E193200268f9a4868e4Aa017A0118C9a8177",
             "LINKTokenAddress": "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
-            "messengerAddress": "0x25Db83e9a6A2fAF7c4E1e2FF3EFC48b5B62B930f"
+            "messengerAddress": "0x0d9ef34c550100b25636F2Ab6Ef3Be57e3B464b1"
         },
         {
             "name": "Ethereum Seppolia testnet",
@@ -14,7 +14,7 @@
             "chainLinkId": "16015286601757825753",
             "chainLinkRouterAddress": "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59",
             "LINKTokenAddress": "0x779877A7B0D9E8603169DdbD7836e478b4624789",
-            "messengerAddress": "0x3C49b2963bDb65cD9FD1074FEAcFF95378225F37"
+            "messengerAddress": "0x64EE6B99F27989C9d9278619067a5D465CF55C82"
         }
     ]
 }

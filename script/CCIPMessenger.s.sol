@@ -23,7 +23,12 @@ contract DeployMessengerFujiScript is Script, Helper{
 
         IERC20 link = IERC20(linkAvalancheFuji);
 
-        link.transfer(address(messenger), 2 * 10**18);
+        uint256 balance = link.balanceOf( vm.addr(fuji_privatekey) );
+        console.log("Link balance: ", balance);
+
+        link.transferFrom(vm.addr(fuji_privatekey), address(messenger), 2 * 10**18);
+
+        messenger.start();
 
         vm.stopBroadcast();    
     }
@@ -41,7 +46,7 @@ contract DeployMessengerSepoliaScript is Script, Helper{
 
         IERC20 link = IERC20(linkEthereumSepolia);
 
-        link.transfer(address(messenger), 2 * 10**18);
+        link.transferFrom( vm.addr(sepolia_privatekey) ,address(messenger), 2 * 10**18);
 
         messenger.start();
 
