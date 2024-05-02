@@ -58,7 +58,9 @@ const ethers = require('ethers')
 
             const chId = chainData.chains[1].chainLinkId
             const dest = chainData.chains[1].messengerAddress
-            const data = ethers.toUtf8Bytes('Hola Don Pepito!')
+
+            const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+            const data = abiCoder.encode(['string'], ['Hola Don Pepito!'])
    
             console.log(chId, dest, data)
 
@@ -66,7 +68,7 @@ const ethers = require('ethers')
                 tx = await msgrCtrt.sendMessage(chId, dest, data)     
                 console.log('Transaction with Message sent. Tx:', tx)
             } catch (err)  {
-                console.log('Error sending message:', err)
+                console.log('Error sending message:', err.info.payload)
             }
 
         }
@@ -109,7 +111,10 @@ const ethers = require('ethers')
 
                 const chId = chainData.chains[0].chainLinkId
                 const rcvr = chainData.chains[0].messengerAddress
-                const data = ethers.toUtf8Bytes('Hola Don José!')
+
+                const abiCoder =  ethers.AbiCoder.defaultAbiCoder()
+                const data = abiCoder.encode(['string'], ['Hola Don José!'])
+           
                 try{
                     tx = await msgrCtrt.sendMessage(chId, rcvr, data)
                     console.log('Transaction with Message sent. Tx:', tx)

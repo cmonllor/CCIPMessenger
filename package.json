@@ -10,7 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run-fuji": "node ./js/index.js  0",
-    "run-sepolia": "node  './js/index.js'  1"
+    "run-sepolia": "node  './js/index.js'  1",
+    "approvals": "node ./js/approvals.js"
   },
   "author": "cmonllor",
   "license": "ISC",

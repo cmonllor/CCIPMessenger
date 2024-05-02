@@ -26,9 +26,10 @@ contract DeployMessengerFujiScript is Script, Helper{
         uint256 balance = link.balanceOf( vm.addr(fuji_privatekey) );
         console.log("Link balance: ", balance);
 
-        link.transferFrom(vm.addr(fuji_privatekey), address(messenger), 2 * 10**18);
-
-        messenger.start();
+        console.log("msg.sender: ", msg.sender);
+        console.log("messenger: ", address(messenger));
+        console.log("fuji_privatekey: ", vm.addr(fuji_privatekey)); 
+        console.log("this: ", address(this));
 
         vm.stopBroadcast();    
     }
@@ -43,13 +44,6 @@ contract DeployMessengerSepoliaScript is Script, Helper{
 
         console.log("Messenger deployed at address: ", address(messenger));
 
-
-        IERC20 link = IERC20(linkEthereumSepolia);
-
-        link.transferFrom( vm.addr(sepolia_privatekey) ,address(messenger), 2 * 10**18);
-
-        messenger.start();
-
         vm.stopBroadcast();    
     }
 }
@@ -60,6 +54,9 @@ contract UpdateFujiPartnerScript is Script, Helper{
 
         vm.startBroadcast(fuji_privatekey);
         Messenger messenger = Messenger(_messenger);
+
+        messenger.start();
+
         messenger.addPartner(_partner, chainIdEthereumSepolia);
 
         console.log("Partner added");
@@ -74,6 +71,9 @@ contract UpdateSepoliaPartnerScript is Script, Helper{
 
         vm.startBroadcast(sepolia_privatekey);
         Messenger messenger = Messenger(_messenger);
+
+        messenger.start();
+
         messenger.addPartner(_partner, chainIdAvalancheFuji);
 
         console.log("Partner added");

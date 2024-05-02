@@ -59,18 +59,12 @@ contract Messenger is ICCIPDriverConsumer {
     }
 
     function start() external {
-        IERC20 link = IERC20(s_link);
-        require(link.balanceOf(address(this)) >= 5 * 10**17, "Messenger: Not enough LINK to start");
-        ccipDriver = CCIPDriver(s_router);
-        link.transfer(address(ccipDriver), 5 * 10**17); // 0.5 LINK to receive messages
-    }
-    
-    function fundDriver() external {
-        IERC20 link = IERC20(s_link);
-        link.transfer(address(ccipDriver), 5 * 10**17); // 0.5 LINK
-    }
+        ccipDriver = new CCIPDriver(s_router, s_link);
 
-
+        IERC20 link = IERC20(s_link);
+        link.transferFrom(msg.sender, address(ccipDriver), 5 * 10**17); // 0.5 LINK to receive messages
+    }
+ 
     function addPartner(address _partner, uint64 _networkId) external  {
         ccipDriver.allowlistDestinationChain(_networkId, true);
         ccipDriver.allowlistSourceChain(_networkId, true);
