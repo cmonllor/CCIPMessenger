@@ -62,7 +62,7 @@ contract Messenger is ICCIPDriverConsumer {
         ccipDriver = new CCIPDriver(s_router, s_link);
 
         IERC20 link = IERC20(s_link);
-        link.transferFrom(msg.sender, address(ccipDriver), 5 * 10**17); // 0.5 LINK to receive messages
+        link.transferFrom(msg.sender, address(ccipDriver), 5 * 10**18); // 5 LINK to receive messages and give ACKs
     }
  
     function addPartner(address _partner, uint64 _networkId) external  {

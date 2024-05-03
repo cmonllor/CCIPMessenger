@@ -1,6 +1,5 @@
 const ethers = require('ethers')
 
-
     const start = async()=>{
         console.log('Starting approvals...')
 
@@ -49,7 +48,7 @@ const ethers = require('ethers')
 
         if( linkAllowanceFj.toString() == '0' ){
             console.log('Approving LINK...')
-            const tx = await linkCtrtFj.approve(messengerFuji, ethers.parseEther('2000000000000000000') );
+            const tx = await linkCtrtFj.approve(messengerFuji, ethers.parseEther('25000000000000000000') );
             console.log('Approve tx:', tx.hash)
 
             const receipt = await tx.wait()
@@ -83,7 +82,7 @@ const ethers = require('ethers')
 
         if( linkAllowanceSp.toString() == '0' ){
             console.log('Approving LINK...')
-            const tx = await linkCtrtSp.approve(messengerSepolia, ethers.parseEther('2000000000000000000') );
+            const tx = await linkCtrtSp.approve(messengerSepolia, ethers.parseEther('25000000000000000000') );
             console.log('Approve tx:', tx.hash)
 
             const receipt = await tx.wait()
