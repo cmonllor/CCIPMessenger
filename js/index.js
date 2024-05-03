@@ -21,7 +21,7 @@ const ethers = require('ethers')
             const prik = process.env.FUJI_ACCOUNT_PRIVATE_KEY
 
             const messengerAddress = chainData.chains[0].messengerAddress;
-
+            
             const provider = new ethers.WebSocketProvider(rpc);
             const wallet = new ethers.Wallet(prik, provider);
 
@@ -60,7 +60,7 @@ const ethers = require('ethers')
             const dest = chainData.chains[1].messengerAddress
 
             const abiCoder = ethers.AbiCoder.defaultAbiCoder()
-            const data = abiCoder.encode(['string'], ['Hola Don Pepito!'])
+            const data = abiCoder.encode(['bytes'], ['0x2324252a2b2c'])
    
             console.log(chId, dest, data)
 
