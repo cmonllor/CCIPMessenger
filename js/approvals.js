@@ -18,6 +18,14 @@ const ethers = require('ethers')
 
         console.log("Updatng chaindata object with Fuji Messenger Address...")
         const messengerFuji = process.env.FUJI_MESSENGER_ADDRESS
+
+        if (!messengerFuji){
+            console.log('Messenger Address not found in .env file')
+            console.log("Logging full goddamn fucked env object")
+            console.log(process.env)
+            return
+        }
+
         chainData.chains[0].messengerAddress = messengerFuji
 
         const linkFuji = chainData.chains[0].LINKTokenAddress;
@@ -86,6 +94,7 @@ const ethers = require('ethers')
         console.log('Approvals done! \n Saving chainData object...')
         fs.writeFileSync( path.resolve(__dirname, 'chainData.json'), JSON.stringify(chainData, null, 2) )
         console.log('chainData object saved!')
+        process.exit(0)
     }
 
 start()
