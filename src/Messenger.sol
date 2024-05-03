@@ -124,12 +124,14 @@ contract Messenger is ICCIPDriverConsumer {
      * @return messageId - The unique ID of the message
      */
     function sendMessage(uint64 _destNetwork, address _destination, bytes calldata _data) external returns (bytes32 messageId){
-        IERC20 link = IERC20(s_link);
-        link.transfer(address(ccipDriver), 5 * 10**17); // 0.5 LINK
 
         bytes32 id =  ccipDriver.sendMessagePayLINK(_destNetwork, _destination, _data);
         waitingAck[id] = true;
 
         return id;
+    }
+
+    function getCCIPDriver() external view returns (address) {
+        return address(ccipDriver);
     }
 }

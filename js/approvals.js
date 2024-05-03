@@ -10,13 +10,16 @@ const ethers = require('ethers')
 
         const path = require('path')
 
-        chainData  = JSON.parse( fs.readFileSync( path.resolve(__dirname, 'chainData.json') ) )
+        const chainData  = JSON.parse( fs.readFileSync( path.resolve(__dirname, 'chainData.json') ) )
 
         console.log('Connecting to Avalanche Fuji Testnet...')
         const rpc = process.env.FUJI_RPC_URL;
         const prik = process.env.FUJI_ACCOUNT_PRIVATE_KEY
 
-        const messengerFuji = chainData.chains[0].messengerAddress;
+        console.log("Updatng chaindata object with Fuji Messenger Address...")
+        const messengerFuji = process.env.FUJI_MESSENGER_ADDRESS
+        chainData.chains[0].messengerAddress = messengerFuji
+
         const linkFuji = chainData.chains[0].LINKTokenAddress;
 
         let providerFj = new ethers.WebSocketProvider(rpc);
@@ -53,9 +56,12 @@ const ethers = require('ethers')
         const rpcS = process.env.SEPOLIA_RPC_URL;
         const prikS = process.env.SEPOLIA_ACCOUNT_PRIVATE_KEY
 
-        const messengerSepolia = chainData.chains[1].messengerAddress;
-        const linkSepolia = chainData.chains[1].LINKTokenAddress;
+        console.log("Updatng chaindata object with Sepolia Messenger Address...")
+        const messengerSepolia = process.env.SEPOLIA_MESSENGER_ADDRESS
+        chainData.chains[1].messengerAddress = messengerSepolia
+   
 
+        const linkSepolia = chainData.chains[1].LINKTokenAddress;
         const providerSepolia = new ethers.WebSocketProvider(rpcS);
         const walletSp = new ethers.Wallet(prikS, providerSepolia);
 
@@ -76,6 +82,10 @@ const ethers = require('ethers')
             console.log('Approve receipt:', receipt)
 
         }
+
+        console.log('Approvals done! \n Saving chainData object...')
+        fs.writeFileSync( path.resolve(__dirname, 'chainData.json'), JSON.stringify(chainData, null, 2) )
+        console.log('chainData object saved!')
     }
 
 start()

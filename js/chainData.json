@@ -5,16 +5,14 @@
             "shortId": 43113,
             "chainLinkId": "14767482510784806043",
             "chainLinkRouterAddress": "0xF694E193200268f9a4868e4Aa017A0118C9a8177",
-            "LINKTokenAddress": "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
-            "messengerAddress": "0x1Fd105C7e422D18E37261a2002441EB8A34EEa35"
+            "LINKTokenAddress": "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846"
         },
         {
             "name": "Ethereum Seppolia testnet",
             "shortId": 11155111,
             "chainLinkId": "16015286601757825753",
             "chainLinkRouterAddress": "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59",
-            "LINKTokenAddress": "0x779877A7B0D9E8603169DdbD7836e478b4624789",
-            "messengerAddress": "0x762F4ca10a12fF1d41a3CB3CbaCCC1fFbc3EA6dD"
+            "LINKTokenAddress": "0x779877A7B0D9E8603169DdbD7836e478b4624789"
         }
     ]
 }
